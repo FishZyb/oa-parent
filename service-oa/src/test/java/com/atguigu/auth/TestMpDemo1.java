@@ -21,10 +21,22 @@ public class TestMpDemo1 {
   @Autowired
   private SysRoleMapper sysRoleMapper;
 
+  //查询数据库中所有的信息
   @Test
   public void getAll(){
     List<SysRole> sysRoles = sysRoleMapper.selectList(null);
     sysRoles.forEach(System.out::println);
+  }
+
+  //添加操作
+  @Test
+  public void add(){
+    SysRole sysRole = new SysRole();
+    sysRole.setRoleName("角色管理员");
+    sysRole.setRoleCode("role");
+    sysRole.setDescription("角色管理员");
+    int insert = sysRoleMapper.insert(sysRole);
+    System.out.println("结果改变的行数："+insert);
   }
 
 }
