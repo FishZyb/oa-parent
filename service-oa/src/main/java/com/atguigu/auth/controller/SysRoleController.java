@@ -1,9 +1,11 @@
 package com.atguigu.auth.controller;
 
 import com.atguigu.auth.service.SysRoleService;
+import com.atguigu.auth.service.SysUserService;
 import com.atguigu.auth.service.impl.SysRoleServiceImpl;
 import com.atguigu.common.result.Result;
 import com.atguigu.model.system.SysRole;
+import com.atguigu.vo.system.AssginRoleVo;
 import com.atguigu.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,10 +14,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 一只鱼zzz
@@ -27,9 +31,28 @@ import java.util.List;
 @RequestMapping("/admin/system/sysRole")
 public class SysRoleController {
 
-  //注入Service
   @Autowired
   private SysRoleServiceImpl sysRoleService;
+
+  @Autowired
+  private SysUserService service;
+
+  //1、查询所有角色 和 当前用户所属角色
+  @ApiOperation("获取角色")
+  @GetMapping("/toAssign/{userId}")
+  public Result toAssign(@PathVariable Long userId){
+    Map<String,Object> map = sysRoleService.findRoleDataByUserId(userId);
+    return Result.ok(map);
+  }
+
+  //2、为用户分配角色
+  @ApiOperation("为用户分配角色")
+  @PostMapping("/doAssign")
+  public Result doAssign(@RequestBody AssginRoleVo assginRoleVo){
+    sysRoleService.doAssign(assginRoleVo);
+    return Result.ok();
+  }
+
 
   //查询所有的角色
   @ApiOperation("查询所有的角色")
