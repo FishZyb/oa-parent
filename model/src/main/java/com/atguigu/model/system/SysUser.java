@@ -14,7 +14,7 @@ import java.util.List;
 @ApiModel(description = "用户")
 @TableName("sys_user")
 public class SysUser extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "用户名")

@@ -38,7 +38,7 @@ public class SysRoleController {
   private SysUserService service;
 
   //1、查询所有角色 和 当前用户所属角色
-  @ApiOperation("获取角色")
+  @ApiOperation("根据用户获取角色数据")
   @GetMapping("/toAssign/{userId}")
   public Result toAssign(@PathVariable Long userId){
     Map<String,Object> map = sysRoleService.findRoleDataByUserId(userId);
@@ -46,18 +46,17 @@ public class SysRoleController {
   }
 
   //2、为用户分配角色
-  @ApiOperation("为用户分配角色")
+  @ApiOperation("根据用户分配角色")
   @PostMapping("/doAssign")
   public Result doAssign(@RequestBody AssginRoleVo assginRoleVo){
     sysRoleService.doAssign(assginRoleVo);
     return Result.ok();
   }
 
-
   //查询所有的角色
   @ApiOperation("查询所有的角色")
   @GetMapping("findAll")
-  public Result findAll(){
+  public Result findAll() {
     //调用service中的方法进行实现
     List<SysRole> list = sysRoleService.list();
     return Result.ok(list);

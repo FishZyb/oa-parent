@@ -3,28 +3,46 @@ package com.atguigu.common.jwt;
 import io.jsonwebtoken.*;
 import org.springframework.util.StringUtils;
 
+
 import java.util.Date;
 
 /**
  * @author 一只鱼zzz
  * @version 1.0
  */
+//jwt工具类
 public class JwtHelper {
+  //
   private static long tokenExpiration = 365 * 24 * 60 * 60 * 1000;
   private static String tokenSignKey = "123456";
 
+  /**
+   * 根据用户id和用户名称生成token字符串
+   * @param userId
+   * @param username
+   * @return
+   */
   public static String createToken(Long userId, String username) {
     String token = Jwts.builder()
+      //分类
       .setSubject("AUTH-USER")
+      //设置token的有效时长
       .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration))
+      //设置主体部分（有效载荷）
       .claim("userId", userId)
       .claim("username", username)
+      //设置签名部分
       .signWith(SignatureAlgorithm.HS512, tokenSignKey)
       .compressWith(CompressionCodecs.GZIP)
       .compact();
     return token;
   }
 
+  /**
+   * 从生成的token字符串中获取用户id
+   * @param token
+   * @return
+   */
   public static Long getUserId(String token) {
     try {
       if (StringUtils.isEmpty(token)) return null;
@@ -39,6 +57,11 @@ public class JwtHelper {
     }
   }
 
+  /**
+   * 从token从获取用户名称
+   * @param token
+   * @return
+   */
   public static String getUsername(String token) {
     try {
       if (StringUtils.isEmpty(token)) return "";
@@ -52,6 +75,10 @@ public class JwtHelper {
     }
   }
 
+  /**
+   * 测试方法
+   * @param args
+   */
   public static void main(String[] args) {
     String token = JwtHelper.createToken(1L, "admin");
     System.out.println(token);

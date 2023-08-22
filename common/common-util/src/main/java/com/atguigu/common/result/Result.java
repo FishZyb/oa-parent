@@ -62,7 +62,6 @@ public class Result<T>{
     return Result.fail(null);
   }
 
-
   public Result<T> message(String msg){
     this.setMessage(msg);
     return this;
