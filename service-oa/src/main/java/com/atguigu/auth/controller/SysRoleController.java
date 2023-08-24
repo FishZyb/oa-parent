@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,6 +67,7 @@ public class SysRoleController {
   //page:当前页 limit：每页显示的记录数
   //sysRoleQueryVo 条件的对象
   @ApiOperation("条件分页查询")
+  @PreAuthorize("hasAuthority('bnt.sysRole.list')")
   @GetMapping("{page}/{limit}")
   public Result pageQueryRole(@PathVariable Long page,
                               @PathVariable Long limit, SysRoleQueryVo sysRoleQueryVo){
@@ -85,6 +87,7 @@ public class SysRoleController {
   }
 
   @ApiOperation("添加角色")
+  @PreAuthorize("hasAuthority('bnt.sysRole.add')")
   @PostMapping("save")
   public Result save(@RequestBody SysRole role){
     //调用service方法
@@ -98,6 +101,7 @@ public class SysRoleController {
 
   //根据id查询
   @ApiOperation("根据id查询")
+  @PreAuthorize("hasAuthority('bnt.sysRole.list')")
   @GetMapping("get/{id}")
   public Result get(@PathVariable Long id){
     SysRole sysRole = sysRoleService.getById(id);
@@ -106,6 +110,7 @@ public class SysRoleController {
 
   //修改角色
   @ApiOperation("修改角色")
+  @PreAuthorize("hasAuthority('bnt.sysRole.update')")
   @PutMapping("update")
   public Result update(@RequestBody SysRole role){
     boolean updateById = sysRoleService.updateById(role);
@@ -118,6 +123,7 @@ public class SysRoleController {
 
   //根据id删除角色
   @ApiOperation("删除角色")
+  @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
   @DeleteMapping("remove/{id}")
   public Result delete(@PathVariable Long id){
     boolean remove = sysRoleService.removeById(id);
@@ -129,6 +135,7 @@ public class SysRoleController {
   }
 
   @ApiOperation(value = "根据id列表删除")
+  @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
   @DeleteMapping("batchRemove")
   public Result batchRemove(@RequestBody List<Long> idList) {
     sysRoleService.removeByIds(idList);
